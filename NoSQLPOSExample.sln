@@ -5,6 +5,14 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoSQLPOSExample", "NoSQLPOSExample.csproj", "{7110CF35-139F-4433-A2F5-5788CA09D55F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JSON", "JSON", "{CFE01BDF-1164-41D7-AFEC-64537B9D61D6}"
+	ProjectSection(SolutionItems) = preProject
+		Customer.json = Customer.json
+		Product.json = Product.json
+		Sale.json = Sale.json
+		Store.json = Store.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
