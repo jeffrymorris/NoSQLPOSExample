@@ -1,0 +1,21 @@
+{
+  "type": "sale",
+  "date": "01/1/1223",
+  "time": "12:30AM",
+  "storeId": 12,
+  "total": 11.00,
+  "lineItems": [
+    {
+      "productId": 212,
+      "name": "Widget XYZ",
+      "quantity": 3,
+      "price": 3.00
+    },
+    {
+      "productId": 292,
+      "name": "Widget ZZZ",
+      "quantity": 1,
+      "price": 2.00
+    }
+  ]
+}
