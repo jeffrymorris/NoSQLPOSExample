@@ -1,6 +1,8 @@
+using Couchbase;
+
 namespace NoSQLPOSExample.Models
 {
-    public class Product
+    public class Product : Document<Product>
     {
         public string Type { get; set; }
         public string Name { get; set; }

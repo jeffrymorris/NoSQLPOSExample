@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Couchbase;
 
 namespace NoSQLPOSExample.Models
 {
-    public class Sale
+    public class Sale : Document<Sale>
     {
         public string Type { get; set; }
         public string Date { get; set; }

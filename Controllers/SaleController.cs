@@ -1,27 +1,42 @@
 ﻿using System.Collections.Generic;
+using Couchbase.Extensions.DependencyInjection;
+using Couchbase.Extensions.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NoSQLPOSExample.Infrastructure;
 using NoSQLPOSExample.Models;
 
 namespace NoSQLPOSExample.Controllers
 {
     public class SaleController : Controller
     {
+        private IRepository _repository;
+
+        public SaleController(IRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: Sale
         public ActionResult Index()
         {
+            HttpContext.Session.SetObject("theKey", "Session Data!");
+
             return View(new List<Sale>());
         }
 
         // GET: Sale/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var sale = _repository.GetAsync<Sale>(id).GetAwaiter().GetResult();
+            return View(sale);
         }
 
         // GET: Sale/Create
         public ActionResult Create()
         {
+            ViewData["Message"] = HttpContext.Session.GetObject<string>("theKey");
+
             return View();
         }
 

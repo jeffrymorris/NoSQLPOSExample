@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Couchbase.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
-using examples.Models;
+using NoSQLPOSExample.Infrastructure;
+using NoSQLPOSExample.Models;
 
 namespace examples.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController(){
-            
+        private IPosBucketProvider _provider;
+
+        public HomeController(IPosBucketProvider provider)
+        {
+            _provider = provider;
         }
+
         public IActionResult Index()
         {
             return View();

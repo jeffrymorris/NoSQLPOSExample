@@ -1,27 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Couchbase.Core;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using NoSQLPOSExample.Infrastructure;
 using NoSQLPOSExample.Models;
+using Couchbase.Extensions.Caching;
+using Couchbase.N1QL;
 
 namespace NoSQLPOSExample.Controllers
 {
     public class ProductController : Controller
     {
+        private IRepository _repository;
+        private IDistributedCache _distributedCache;
+
+        public ProductController(IRepository repository, IDistributedCache distributedCache)
+        {
+            _repository = repository;
+            _distributedCache = distributedCache;
+        }
+
         // GET: Product
         public ActionResult Index()
         {
-            return View(new List<Product>());
+            var bytes = System.Text.Encoding.UTF8.GetBytes(DateTime.Now.ToString());
+            _distributedCache.Set("theCacheKey", bytes, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromSeconds(10)
+            });
+
+            const string statement = "SELECT META().id, p.description, p.name, p.price FROM `pos` as p WHERE type='product'";
+            return View(_repository.QueryAsync<Product>(statement).GetAwaiter().GetResult());
         }
 
         // GET: Product/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var product = _repository.GetAsync<Product>(id).GetAwaiter().GetResult();
+            return View(product);
         }
 
         // GET: Product/Create
         public ActionResult Create()
         {
+            var bytes = _distributedCache.Get("theCacheKey");
+            if (bytes != null)
+            {
+                ViewData["Message"] = System.Text.Encoding.UTF8.GetString(bytes);
+            }
+
             return View();
         }
 
